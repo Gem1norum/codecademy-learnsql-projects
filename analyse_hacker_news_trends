@@ -1,0 +1,29 @@
+-- select title, score from hacker_news order by score desc limit 5; (1: finding most popular stories, ordering by highest score)
+
+-- select sum(score) from hacker_news; (2: calculating total score of all stories)
+
+-- select user, sum(score) from hacker_news group by 1 having sum(score)>200 order by 2 desc; (3: calculating combined score of each user and grouping to create output of user and their combined score)
+
+-- select (517+309+304+282)/6366.0; (4:calculating percentage of score contributed by users with a combined score of >200)
+
+-- select user, count(url) from hacker_news where url = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' group by 1 order by 2 desc; (5: finding no. times url has been posted to site, grouped by username and in descending order)
+
+-- Which sites feed Hacker News?
+
+-- SELECT CASE
+--    WHEN url LIKE '%github.com%' THEN 'GitHub'
+--    WHEN url LIKE '%medium.com%' THEN 'Medium'
+--    WHEN url LIKE '%nytimes.com%' THEN 'New York Times'
+--    ELSE 'Other'
+--   END AS 'Source',
+--   COUNT(url)
+-- FROM hacker_news
+-- GROUP BY 1; (6,7: creating a case to find out how many times a link to the three sites are fed to hacker. See how the case ends as Source, i.e. the name of the column that the case generates, and is followed by count (url) which generates a new column. All grouped by source)
+
+-- select timestamp from hacker_news limit 10; (8: seeing how dates are formatted in this database)
+
+-- select timestamp, strftime('%H', timestamp) from hacker_news group by 1 limit 20 (9: seeing how strftime function works- here i can see that the addition of %H (case sensitive) extracts the hour in 24 H format)
+
+-- select strftime('%H', timestamp), avg(score), count(*) from hacker_news group by 1 order by 2 desc; (10: writing a query that returns 3 columns. The hour of the timestamp, the average score of each hour, and the count of stories for each hour)
+
+select strftime('%H', timestamp) as 'Hour', round(avg(score),0) as 'Rounded Average', count(*) as 'Count' from hacker_news where timestamp is not null group by 1 order by 2 desc; -- this doesnt work if you use column 1 with the where condition??
