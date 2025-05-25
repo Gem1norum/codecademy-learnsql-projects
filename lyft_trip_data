@@ -1,0 +1,45 @@
+select * from trips;
+select * from riders;
+select * from cars;
+
+-- id = primary key of trips
+-- id = primary key of riders (rider_id as a foreign key in trips)
+-- id = primary key of cars (car_id  as a foreign key in trips) 
+
+-- select *
+-- from riders
+-- cross join cars; -- creating a simple cross join with a useless result
+
+-- select riders.first, riders.last, riders.username, riders.total_trips, date, pickup, dropoff, type, cost
+-- from trips
+-- left join riders
+-- on trips.rider_id = riders.id; -- using left join to create a 'trips log' linking riders to their trips through the rider_id keys in trips and riders tables. I chose to only use a select number of columns here that i thought would be relevant instead of choosing *
+
+-- select trips.date, trips.pickup, trips.dropoff, trips.type, trips.cost, cars.model, cars.OS, cars.status, cars.trips_completed
+-- from trips
+-- join cars
+-- on trips.car_id = cars.id; 
+
+-- using inner join. Written as join here but can also be written as inner join. 
+-- above I made a trip-car relation showing a link between the trips and what kind of car was used to make each one
+
+-- select * 
+-- from riders
+-- union
+-- select * 
+-- from riders2;
+
+select avg(cost) from trips; -- determining average cost of a trip
+
+select *
+from riders
+where total_trips < 500; --determining riders who have completed less than 500 trips
+
+select count(*)
+from cars
+where status = 'active'; --determining the no. cars who have the active status
+
+select *
+from cars
+order by trips_completed desc
+limit 2; -- determining the cars that need to be recalled by first finding the 2 with the highest number of trips completed
