@@ -1,0 +1,15 @@
+-- select * from transactions;
+
+-- select sum(money_in) from transactions; -- determining the total amount of money spent by users
+
+-- select sum(money_out) from transactions; -- determining the total amount (in USD) from users selling
+
+-- select currency, count(*) as 'frequency' from transactions where money_out is null group by 1 order by 2 desc; --determining whether Bitcoin is the dominant currency in Fiddy Cent's exchange
+
+-- select max(money_in), max(money_out) from transactions; -- determining the maximum amounts of money in and out of the exchange. Clearly the money flowing out of the exchange is higher than that of the money in.
+
+-- select avg(money_in) from transactions where currency is 'ETH'; -- determining average money in in etherium
+
+-- select date, avg(money_in), avg(money_out) from transactions group by 1; -- building a ledger for different dates
+
+select date, round(avg(money_in), 2) as 'inflow', round(avg(money_out), 2) as 'outflow' from transactions group by 1; -- improving legibility of ledger by rounding currency to 2 dp and giving columns aliases using as
