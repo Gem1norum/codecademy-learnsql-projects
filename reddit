@@ -1,0 +1,48 @@
+-- select * from users limit 10;
+-- select * from posts limit 10;
+-- select * from subreddits limit 10;
+
+--primary keys:
+-- all are id
+-- foregin keys:
+-- posts.user_id, posts.subreddit_id
+
+-- select distinct count(*) from subreddits; -- determining how many different subreddits there are in the datasets provided
+
+-- select max(score) from users; -- determining highest user score: 300895
+-- select max(score) from posts; --determining highest post score: 149176
+-- select name, subscriber_count from subreddits order by subscriber_count desc limit 5; -- determining top 5 most subscribed to subreddits
+
+-- select users.username, count(*) from users 
+-- left join posts 
+-- on users.id = posts.user_id 
+-- group by users.id
+-- order by count(*) desc; -- left joining users and posts to determine how many posts each user has made, using users as the left table and filterning by number of posts in descending order. 
+
+-- select users.username, posts.title from posts 
+-- join users
+-- on users.id = posts.user_id; -- inner joining users and posts to find posts from users who are still active
+
+-- select * from posts 
+-- union 
+-- select * from posts2; -- stacking new posts underneath old ones using a union
+
+-- with popular_posts as (
+--   select * from posts where score >= 5000
+-- )
+-- select subreddits.name, popular_posts.title, popular_posts.score from subreddits 
+-- join popular_posts 
+-- on subreddits.id = popular_posts.subreddit_id 
+-- order by 3 desc; -- detemining which subreddits have the most popular posts. Done by creating a temp table (popular_posts) using a with clause then using an inner join to produce a table of popular posts on popular subreddits in descending order of score
+
+-- select subreddits.name, max(posts.score) as 'highest scoring post'  from posts 
+-- join subreddits 
+-- on posts.subreddit_id = subreddits.id 
+-- group by subreddits.id
+-- order by max(posts.score) desc;
+
+select subreddits.name, avg(posts.score) as 'average post score' from subreddits 
+join posts 
+on subreddits.id = posts.subreddit_id 
+group by subreddits.id
+order by avg(posts.score) desc; -- determining average score of posts on each subreddit. period
