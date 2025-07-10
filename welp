@@ -1,0 +1,28 @@
+-- select * from places;
+-- select * from reviews;
+
+-- select * from places 
+-- where price_point is '$' or price_point is '$$'; -- determining which places cost $20 or less if each each $ represents $10
+
+-- select * 
+-- from places 
+-- join reviews on reviews.place_id = places.id;
+
+-- select * from places 
+-- join reviews on reviews.place_id = places.id 
+-- where total_reviews >= 1; --joining the tables and filtering by which places have at least 1 review
+
+-- select places.name, places.average_rating, reviews.username, reviews.rating, reviews.review_date, reviews.note from places 
+-- join reviews on reviews.place_id = places.id 
+-- where total_reviews >= 1; -- selecting specified columns from each place joined review
+
+-- select places.name, places.average_rating, reviews.username, reviews.rating, reviews.review_date, reviews.note 
+-- from places 
+-- left join reviews 
+-- on reviews.place_id = places.id; --left joining places and reviews tables together. As a log of reviews the inner join is probabnly more useful as it will only show you places that have corresponding reviews. This is because the innner join only returns records with corresponding data in each table. A left join table will return all places regardless of whether it has been reviews or not, so is instead more useful for the following exercise.
+
+select places.name, places.average_rating, reviews.username, reviews.rating, reviews.review_date, reviews.note 
+from places 
+left join reviews 
+on reviews.place_id = places.id 
+where reviews.rating is null; -- left join used to determine which places have no reviews. This is becausethe left join will return all places regardless of whether it has been reviewd or not, unlike an inner join.
