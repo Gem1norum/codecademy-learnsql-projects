@@ -1,0 +1,68 @@
+-- select * from state_climate;
+
+-- select state, year, tempc, 
+-- avg(tempc) over (
+--   partition by state 
+--   order by year
+-- ) as 'running_avg_temp' 
+-- from state_climate; --determining the running average temperature in degrees celcius, that is to see how the average temperature changes over time.
+
+-- select state, year, tempc, min(tempc) 
+-- from state_climate group by 1 order by 2;
+
+-- select state, year, tempc, 
+-- first_value(tempc) over (
+--   partition by state 
+--   order by tempc
+-- ) 
+-- from state_climate; --here we find the lowest temperatures for each state. note here I use the window function first_value() to determine thi sinstead of a min and group by/order by combination, as this helps me to compare the lowest recorded temp for each state at every year side by side.
+
+-- select state, year, tempc, 
+-- last_value(tempc) over (
+--   partition by state 
+--   order by tempc 
+--   RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+-- ) as 'highest_temp' 
+-- from state_climate; --determining the highest recorded temperature per state in comparison to yearly recorded temperatures in degrees celcius. it is imperative to specify a frame of reference with the 'range between....' otherwise it doesnt display the correct values.
+
+-- select state, year, tempc, 
+-- tempc - lag(tempc, 1, tempc) over (
+--   partition by state 
+--   order by year
+-- ) as 'change_in_temp' 
+-- from state_climate
+-- order by change_in_temp; --by adjusting the final order by asc or desc we can see the states that experienced the largest changes in temperature compared to the previous year.
+
+-- select rank() over (
+--   order by tempc
+-- ) as 'coldest_rank', 
+-- year, state, tempc 
+-- from state_climate; -- using a rank window function to tabulate the coldest years in the dataset
+
+-- select rank() over (
+--   order by tempc desc
+-- ) as 'warmest_rank', 
+-- year, state, tempc 
+-- from state_climate; --same thing but for the warmest years in these records
+
+-- SELECT 
+--    NTILE(4) OVER (
+--       partition by week
+--       ORDER BY streams_millions DESC
+--    ) AS 'quartile', 
+--    artist, 
+--    week,
+--    streams_millions
+-- FROM
+--    streams;
+
+-- select ntile(4) over (
+--   partition by state 
+--   order by tempc asc
+-- ) as 'quartile', year, state, tempc 
+-- from state_climate; -- determining average yearly temperatures in quartiles for each state.
+
+select ntile(5) over (
+  order by tempc asc
+) as 'quintile', year, state, tempc 
+from state_climate; --determining average yearly temperature in quintiles, with the top quintiles being the coldest years overall. Since we are looking at overall data, we do not partition anything here. 
