@@ -1,0 +1,67 @@
+-- select * from problems
+
+-- SELECT 
+--     o.org_name AS organisation, 
+--     COUNT(s.system) AS system_count
+-- FROM 
+--     orgs o
+-- JOIN 
+--     systems s ON o.org_id = s.org_id
+-- GROUP BY 
+--     o.org_name
+-- ORDER BY 
+--     system_count DESC; -- from gpt-4o: This query will output a table where each row provides the name of an organization and the number of AI systems it has created, ordered by the system count.
+
+-- SELECT 
+--     o.org_name AS organisation, 
+--     COUNT(s.system) AS system_count
+-- FROM 
+--     orgs o
+-- JOIN 
+--     systems s ON o.org_id = s.org_id
+-- WHERE 
+--     s.system LIKE '%image generation%'
+-- GROUP BY 
+--     o.org_name
+-- ORDER BY 
+--     system_count DESC; -- using a prompt for AI to filter the previous query by ai system. In this case, only 'image generation' ai is searched for here. Prompt given: 'Iterate on this query by filtering by AI system. Specify the type of AI in this case, such as searching solely for 'image generation' AI'
+
+-- select publication_date from systems limit 10;
+
+-- SELECT 
+--     YEAR(s.publication_date) AS year,
+--     COUNT(s.system) AS system_count,
+--     MAX(s.parameters) AS max_parameters
+-- FROM 
+--     systems s
+-- GROUP BY 
+--     YEAR(s.publication_date)
+-- ORDER BY 
+--     year; -- prompting ai to investigate growth of ai development over time. I've asked it to write a query that counts the number of ai systems in each year and to report the maximum number of parameters. Prompt used: the systems table includes the column 'publication_date' that is written in the format yyyy-mm-dd, and 'parameters'. Write a sql query that counts the number of AI systems each year and also reports the maximum number of parameters
+
+-- SELECT 
+--     STRFTIME('%Y', s.publication_date) AS year,
+--     COUNT(s.system) AS system_count,
+--     MAX(s.parameters) AS max_parameters
+-- FROM 
+--     systems s
+-- GROUP BY 
+--     year
+-- ORDER BY 
+--     year; -- YEAR keyword not giving output because we use sqlite here. Prompted AI to revise the given query to produce an output in sqlite. prompt given: I am using sqlite and not receiving an output with the YEAR keyword. Please revise this query for SQLite
+
+SELECT 
+    p.task AS problem, 
+    COUNT(DISTINCT s.org_id) AS organisation_count
+FROM 
+    problems p
+JOIN 
+    systems s ON p.problem_id = s.problem_id
+JOIN 
+    orgs o ON s.org_id = o.org_id
+GROUP BY 
+    p.task
+ORDER BY 
+    organisation_count DESC
+LIMIT 5; -- determining the top 5 ai problems organisations focus on. Prompt used: 'I want to find the top 5 AI problems organisations focus on. write a query that will produce a table with the following structure: problem | count(organisations)  . When i use count(organisations) i mean the number of organisations working on each problem. instead of problem id as the first column use task from the problems table'
+
