@@ -1,0 +1,17 @@
+-- select * from survey limit 10; -- getting an idea of the survey table
+
+-- select question, count(*) as 'num_responses' from survey group by 1 order by 1; --creating a quiz funnel using the group by command. here i see how users 'give up' at certain points in the survey (or don't answer at all)
+
+-- select question, count(*) as 'num_responses' from survey group by 1 order by 1; --how would i calculate percentage change in sql?
+
+-- select * from quiz limit 5;
+-- select * from home_try_on limit 5;
+-- select * from purchase limit 5; -- examining the first 5 rows of 3 tables i will use
+
+select q.user_id, 
+h.user_id is not null as 'is_home_try_on', h.number_of_pairs, p.user_id is not null as 'is_purchase' from quiz q
+left join home_try_on h 
+on q.user_id = h.user_id 
+left join purchase p 
+on h.user_id = p.user_id 
+limit 10; -- my error here: q.user_id in home_try on (i.e. using the in keyword) is incorrect sql syntax because the in keyword is used to check if a value exists in a list or subquery. E.g. i could say q.user_id in (select user_id from home_try_on) that could check if the user is in the list of ids from home_try_on. Using is not null is better because the left join is likely to contain null values in this situation. 
